@@ -1,0 +1,52 @@
+kind: List
+apiVersion: v1
+items:
+- kind: ReplicationController
+  apiVersion: v1
+  metadata:
+    labels:
+      app: dht-server
+    name: dht-server
+    namespace: default
+  spec:
+    replicas: 1
+    selector:
+      app: dht-server
+    template:
+      metadata:
+        labels:
+          app: dht-server
+      spec:
+        containers:
+          - name: dht-server
+            securityContext:
+              privileged: true
+            image: floreks/dht-server
+            imagePullPolicy: Always
+            ports:
+              - containerPort: 3000
+                protocol: TCP
+            volumeMounts:
+              - mountPath: /sys/class/gpio
+                name:      sys-class-gpio
+            args:
+              # Uncomment this if you want to change port
+              # - --port=3001
+        volumes:
+          - name:     sys-class-gpio
+            hostPath:
+              path:   /sys/class/gpio
+- kind: Service
+  apiVersion: v1
+  metadata:
+    labels:
+      app: dht-server
+    name: dht-server
+    namespace: default
+  spec:
+    type: NodePort
+    ports:
+    - port: 3000
+      targetPort: 3000
+    selector:
+      app: dht-server

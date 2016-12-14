@@ -1,0 +1,37 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "x+JG2xNgB5Gu5R8auPvQNG9UFHs=",
+			"path": "github.com/d2r2/go-dht",
+			"revision": "8dcb0ff5a1bbb2fb6041479e09b4b314903cc55b",
+			"revisionTime": "2016-11-01T10:42:20Z"
+		},
+		{
+			"checksumSHA1": "/NDbz5NzyAztjtsC3QdQk9mTNp4=",
+			"path": "github.com/emicklei/go-restful",
+			"revision": "e9d6cfe95e4be7e9f85e79dab93bebb14a517f20",
+			"revisionTime": "2016-11-26T06:42:14Z"
+		},
+		{
+			"checksumSHA1": "3xWz4fZ9xW+CfADpYoPFcZCYJ4E=",
+			"path": "github.com/emicklei/go-restful/log",
+			"revision": "e9d6cfe95e4be7e9f85e79dab93bebb14a517f20",
+			"revisionTime": "2016-11-26T06:42:14Z"
+		},
+		{
+			"checksumSHA1": "BoXdUBWB8UnSlFlbnuTQaPqfCGk=",
+			"path": "github.com/op/go-logging",
+			"revision": "970db520ece77730c7e4724c61121037378659d9",
+			"revisionTime": "2016-03-15T20:05:05Z"
+		},
+		{
+			"checksumSHA1": "GxPD7A0NjMDom1xte0mghkpzr0E=",
+			"path": "github.com/spf13/pflag",
+			"revision": "5ccb023bc27df288a957c5e994cd44fd19619465",
+			"revisionTime": "2016-10-24T13:13:51Z"
+		}
+	],
+	"rootPath": "github.com/floreks/dht-server"
+}
