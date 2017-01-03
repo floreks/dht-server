@@ -39,7 +39,7 @@ arm: prepare
 ifndef XGO
 	$(error "Could not find XGO compiler.")
 endif
-	@xgo -targets linux/arm .
+	@xgo -targets linux/arm-6 .
 	@mv dht* build/
 
 clean:
