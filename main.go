@@ -31,6 +31,7 @@ import (
 
 	"github.com/emicklei/go-restful"
 	"github.com/floreks/dht-server/service/dht"
+	"github.com/floreks/dht-server/service/ds18b20"
 	"github.com/spf13/pflag"
 )
 
@@ -46,7 +47,8 @@ func main() {
 	pflag.Parse()
 
 	// Register handler
-	restful.Add(service.NewDHT11Service().Handler())
+	restful.Add(dht.NewDHT11Service().Handler())
+	restful.Add(ds18b20.NewDS18B20Service().Handler())
 
 	log.Printf("Listening on port: %d", *argPort)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *argPort), nil))

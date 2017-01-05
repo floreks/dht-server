@@ -20,16 +20,67 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package dht
+package sensor
 
 import (
-	"github.com/emicklei/go-restful"
+	"fmt"
+	"github.com/emicklei/go-restful/log"
+	DS18B20 "github.com/traetox/goDS18B20"
 )
 
+type DS18B20Response struct {
+	// Temperature
+	Temperature float32 `json:"temperature"`
+}
+
 // TODO add doc
-type DHTService interface {
-	Handler() *restful.WebService
-	readFromSensor(request *restful.Request, response *restful.Response)
-	readTemperature(request *restful.Request, response *restful.Response)
-	readHumidity(request *restful.Request, response *restful.Response)
+type DS18B20Reader struct{}
+
+// TODO add doc
+func (ds DS18B20Reader) ReadFromSensor() (*DS18B20Response, error) {
+	log.Print("Reading from sensor DS18B20.")
+	err := DS18B20.Setup()
+	if err != nil {
+		return nil, err
+	}
+
+	id, err := ds.getSlaveID()
+	if err != nil {
+		return nil, err
+	}
+
+	probe, err := DS18B20.NewProbe(id)
+	if err != nil {
+		return nil, err
+	}
+
+	err = probe.Update()
+	if err != nil {
+		return nil, err
+	}
+
+	temp, err := probe.Temperature()
+	if err != nil {
+		return nil, err
+	}
+
+	return &DS18B20Response{Temperature: temp.Celsius()}, nil
+}
+
+func (DS18B20Reader) getSlaveID() (string, error) {
+	slaves, err := DS18B20.Slaves()
+	if err != nil {
+		return "", nil
+	}
+
+	if len(slaves) == 0 {
+		return "", fmt.Errorf("%s", "Could not find any DS18B20 sensors.")
+	}
+
+	if len(slaves) > 1 {
+		log.Print("Found more than 1 DS18B20 sensor, taking first one.")
+	}
+
+	log.Printf("Found slave with id: %s", slaves[0])
+	return slaves[0], nil
 }

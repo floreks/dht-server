@@ -20,16 +20,48 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package dht
+package ds18b20
 
 import (
+	"net/http"
+
 	"github.com/emicklei/go-restful"
+	"github.com/floreks/dht-server/sensor/ds18b20"
+	"github.com/floreks/dht-server/service"
 )
 
 // TODO add doc
-type DHTService interface {
-	Handler() *restful.WebService
-	readFromSensor(request *restful.Request, response *restful.Response)
-	readTemperature(request *restful.Request, response *restful.Response)
-	readHumidity(request *restful.Request, response *restful.Response)
+type DS18B20Service struct {
+	reader sensor.DS18B20Reader
+}
+
+// TODO add doc
+func (d DS18B20Service) Handler() *restful.WebService {
+	ws := new(restful.WebService)
+	ws.
+		Path("/ds18b20").
+		Consumes(restful.MIME_JSON).
+		Produces(restful.MIME_JSON)
+
+	ws.Route(ws.GET("/").To(d.readFromSensor).
+		Doc("Reads temperature from DS18B20 sensor").
+		Writes(sensor.DS18B20Response{}))
+
+	return ws
+}
+
+// TODO add doc
+func (d DS18B20Service) readFromSensor(request *restful.Request, response *restful.Response) {
+	result, err := d.reader.ReadFromSensor()
+	if err != nil {
+		service.HandleInternalServerError(response, err)
+		return
+	}
+
+	response.WriteHeaderAndEntity(http.StatusOK, result)
+}
+
+// TODO add doc
+func NewDS18B20Service() DS18B20Service {
+	return DS18B20Service{reader: sensor.DS18B20Reader{}}
 }

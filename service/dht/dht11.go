@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package service
+package dht
 
 import (
 	"net/http"
@@ -49,7 +49,7 @@ func (d DHT11Service) Handler() *restful.WebService {
 		Writes(sensor.DHTResponse{}))
 
 	ws.Route(ws.POST("/").To(d.setGPIO).
-			Doc("Sets GPIO pin number that should be used to read sensor data from"))
+		Doc("Sets GPIO pin number that should be used to read sensor data from"))
 
 	ws.Route(ws.GET("/temperature").To(d.readTemperature).
 		Doc("Returns only temperature read from DHT11 sensor").
@@ -60,7 +60,7 @@ func (d DHT11Service) Handler() *restful.WebService {
 		Writes(sensor.DHTHumidity{}))
 
 	ws.Route(ws.GET("/reset").To(d.resetGPIO).
-			Doc("Resets GPIO pin number to default value"))
+		Doc("Resets GPIO pin number to default value"))
 
 	return ws
 }
