@@ -39,11 +39,6 @@ type DS18B20Reader struct{}
 // TODO add doc
 func (ds DS18B20Reader) ReadFromSensor() (*DS18B20Response, error) {
 	log.Print("Reading from sensor DS18B20.")
-	err := DS18B20.Setup()
-	if err != nil {
-		return nil, err
-	}
-
 	id, err := ds.getSlaveID()
 	if err != nil {
 		return nil, err
@@ -70,7 +65,7 @@ func (ds DS18B20Reader) ReadFromSensor() (*DS18B20Response, error) {
 func (DS18B20Reader) getSlaveID() (string, error) {
 	slaves, err := DS18B20.Slaves()
 	if err != nil {
-		return "", nil
+		return "", err
 	}
 
 	if len(slaves) == 0 {
