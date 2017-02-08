@@ -50,6 +50,16 @@ func main() {
 	restful.Add(dht.NewDHT11Service().Handler())
 	restful.Add(ds18b20.NewDS18B20Service().Handler())
 
+	// Add container filter to enable CORS
+	cors := restful.CrossOriginResourceSharing{
+		ExposeHeaders:  []string{"X-My-Header"},
+		AllowedHeaders: []string{"Content-Type", "Accept"},
+		AllowedMethods: []string{"GET", "POST"},
+		CookiesAllowed: false,
+		Container:      restful.DefaultContainer}
+	restful.DefaultContainer.Filter(cors.Filter)
+	restful.DefaultContainer.Filter(restful.DefaultContainer.OPTIONSFilter)
+
 	log.Printf("Listening on port: %d", *argPort)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *argPort), nil))
 }
