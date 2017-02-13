@@ -24,13 +24,14 @@ package sensor
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/d2r2/go-dht"
 	"github.com/emicklei/go-restful/log"
-	"strings"
 )
 
 const (
-	GPIO_PIN        = 4
+	GPIO_PIN        = 17
 	RETRIES         = 5
 	BOOST_PERF_FLAG = false
 )
